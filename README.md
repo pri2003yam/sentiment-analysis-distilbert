@@ -1,160 +1,169 @@
-Here comes a clean, recruiter-ready README — the type that makes your project look polished and intentional.
-No unnecessary fluff, no noisy explanations. Clear, technical, and professionally structured.
+# Sentiment Analysis with DistilBERT
 
----
-
-# ✅ **File 5: `README.md`**
-
-```markdown
-# Sentiment Classifier using HuggingFace Transformers
-
-A lightweight sentiment analysis system built using a pretrained DistilBERT model.  
-Includes real-time prediction through a Streamlit UI and an optional fine-tuning pipeline for custom datasets.
+A lightweight sentiment analysis system built using the pretrained **DistilBERT** model fine-tuned on SST-2 dataset.  
+Includes real-time prediction through a **Streamlit UI** and an optional fine-tuning pipeline for custom datasets.
 
 ---
 
 ## 🚀 Features
 
-- Uses `distilbert-base-uncased-finetuned-sst-2-english` for sentiment prediction  
-- Clean inference pipeline with a reusable `SentimentClassifier` class  
-- Streamlit-powered UI for real-time text analysis  
-- Optional fine-tuning on a small labelled dataset (tweets.csv)  
-- GPU-friendly (automatically uses CUDA if available)
+- **Pre-trained DistilBERT Model**: Uses `distilbert-base-uncased-finetuned-sst-2-english` for sentiment classification
+- **Inference Pipeline**: Reusable `SentimentClassifier` class with tokenization and forward pass
+- **Streamlit Web UI**: Real-time sentiment analysis with confidence scores
+- **Local Model Caching**: Models downloaded and cached locally for offline use
+- **GPU Support**: Automatically uses CUDA if available, falls back to CPU
+- **Training Pipeline**: Optional fine-tuning script for custom datasets
 
 ---
 
 ## 📁 Project Structure
 
 ```
-
-sentiment-classifier/
+sentiment-analysis-distilbert/
 │
-├── app.py                  # Streamlit UI
-├── inference.py            # Model loading + prediction logic
-├── train.py                # Optional fine-tuning script
+├── app.py                      # Streamlit web application
+├── inference.py                # Core inference class (SentimentClassifier)
+├── train.py                    # Fine-tuning script for custom data
 │
 ├── data/
-│   └── tweets.csv          # Custom labelled dataset (text, label)
+│   └── tweets.csv              # Sample dataset (text, label columns)
 │
 ├── models/
-│   └── fine_tuned_model/   # Saved model after training
+│   └── distilbert_model/       # Downloaded pre-trained model
 │
-├── requirements.txt
-└── README.md
-
-````
+├── requirements.txt            # Python dependencies
+├── README.md                   # This file
+└── fix_cache.py                # Cache management utility
+```
 
 ---
 
 ## 🛠 Installation
 
-1. Clone the repo:
+### Prerequisites
+- Python 3.8+
+- pip
+
+### Setup
+
+1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/sentiment-classifier.git
-   cd sentiment-classifier
-````
+   git clone https://github.com/pri2003yam/sentiment-analysis-distilbert.git
+   cd sentiment-analysis-distilbert
+   ```
 
-2. Install dependencies:
+2. Create a virtual environment (recommended):
+   ```bash
+   python -m venv venv
+   source venv/Scripts/activate  # On Windows
+   # or
+   source venv/bin/activate      # On macOS/Linux
+   ```
 
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
 ---
 
-## 📌 Running the Streamlit App
+## 🚀 Quick Start
+
+### Run the Streamlit Web App
 
 ```bash
 streamlit run app.py
 ```
 
-Open the link shown in your terminal to access the UI.
+The app will open at `http://localhost:8502`
+
+**Usage:**
+1. Enter any text in the input field
+2. Click "Analyze Sentiment"
+3. Get sentiment prediction (positive/negative) with confidence score
 
 ---
 
-## 🧠 How Inference Works
-
-* Loads the pretrained DistilBERT model only once
-* Tokenizes user input text
-* Runs a forward pass and extracts probabilities
-* Outputs **positive** or **negative** with confidence score
-
-Code lives in:
-
-```
-inference.py
-```
-
-Usage:
+## 💻 Using the Inference Pipeline
 
 ```python
-from inference import classifier
-result = classifier.predict("I love this!")
+from inference import SentimentClassifier
+
+# Load the classifier
+classifier = SentimentClassifier()
+
+# Make predictions
+result = classifier.predict("I love this movie!")
+print(result)
+# Output: {'label': 'positive', 'score': 0.9998}
 ```
 
 ---
 
-## 🔧 Fine-Tuning (Optional)
+## 🔧 Fine-Tuning on Custom Data (Optional)
 
-1. Place a dataset inside `data/tweets.csv` containing:
+### Dataset Format
 
-```
+Create `data/tweets.csv` with the following structure:
+
+```csv
 text,label
-this is great,1
-terrible product,0
+this product is amazing,1
+terrible experience,0
+i love it,1
+waste of money,0
 ```
 
-2. Run:
+### Run Fine-Tuning
 
 ```bash
 python train.py
 ```
 
-Fine-tuned model gets saved into:
-
-```
-models/fine_tuned_model/
-```
-
-To use it in the UI, update:
-
-```python
-classifier = SentimentClassifier("models/fine_tuned_model")
-```
+The fine-tuned model will be saved in the `models/` directory.
 
 ---
 
-## 📦 Tech Stack
+## 📦 Dependencies
 
-* Python
-* HuggingFace Transformers
-* DistilBERT
-* PyTorch
-* Streamlit
-* scikit-learn
+- **transformers** - HuggingFace transformers library
+- **torch** - PyTorch deep learning framework
+- **streamlit** - Web UI framework
+- **huggingface_hub** - Model downloading and management
+
+See `requirements.txt` for exact versions.
+
+---
+
+## 🎯 Model Details
+
+- **Model**: `distilbert-base-uncased-finetuned-sst-2-english`
+- **Task**: Binary sentiment classification (positive/negative)
+- **Training Data**: Stanford Sentiment Treebank (SST-2)
+- **Input**: Raw text (automatically tokenized)
+- **Output**: Sentiment label + confidence score
+
+---
+
+## 💡 How It Works
+
+1. **Tokenization**: Input text is converted to token IDs using DistilBERT tokenizer
+2. **Forward Pass**: Tokens are processed through the model
+3. **Softmax**: Output logits are converted to probabilities
+4. **Classification**: Highest probability label (positive/negative) is selected
 
 ---
 
 ## 📜 License
 
-MIT License.
-
-```
+MIT License - See LICENSE file for details.
 
 ---
 
-Your project is now fully ready:  
-✔ structure  
-✔ inference  
-✔ UI  
-✔ training  
-✔ README  
+## 👤 Author
 
-If you want, I can also create:
+[pri2003yam](https://github.com/pri2003yam)
 
-- a sample `tweets.csv` dataset  
-- screenshots for your GitHub README  
-- a HuggingFace Spaces deployment guide  
+---
 
-Just tell me what you want next.
-```
+**Last Updated**: November 19, 2025
