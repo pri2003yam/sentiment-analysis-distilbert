@@ -1,0 +1,48 @@
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.p
+*.h5
+
+# ===== Virtual Environment =====
+venv/
+.venv/
+
+# ===== Streamlit =====
+.streamlit/
+
+# ===== HuggingFace Cache =====
+*.lock
+**/.cache/
+**/added_tokens.json
+**/special_tokens_map.json
+**/tokenizer.json
+**/tokenizer_config.json
+
+# ===== Model Weights (DO NOT COMMIT) =====
+models/**
+!models/.gitkeep
+
+# If you want to keep the folder but not contents:
+# models/*
+
+# ===== Training Artifacts =====
+checkpoints/
+runs/
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.model
+*.pb
+
+# ===== Logs =====
+logs/
+*.log
+
+# ===== System files =====
+.DS_Store
+Thumbs.db
